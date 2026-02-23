@@ -20,7 +20,7 @@ struct ContentView: View {
             WebView(webView: $webView, url: homeURL)
                 .set(loading: $isLoading)
                 .set(navigationPolicy: { _ in .allow })
-//                .set(webView: $webView)
+            //                .set(webView: $webView)
                 .ignoresSafeArea(edges: [.bottom, .leading, .trailing])
             
             // Loader
@@ -52,67 +52,21 @@ struct ContentView: View {
                     // Controls
                     HStack(spacing: 12) {
                         
-                        Button {
-                            webView?.reload()
-                        } label: {
-                            Image(systemName: "arrow.clockwise")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 16, height: 16)
-                                .foregroundColor(.black)
-                                .padding(12)
-                                .background(.white)
-                                .cornerRadius(.infinity)
-                                .aspectRatio(1, contentMode: .fit)
-                        }
+                        Button { webView?.reload() }
+                        label: { controlIcon("arrow.clockwise") }
                         
-                        HStack(spacing: 12) {
-                            Button {
-                                webView?.goBack()
-                            } label: {
-                                Image(systemName: "chevron.backward")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 16, height: 16)
-                                    .foregroundColor(.black)
-                                    .padding(12)
-                                    .frame(maxWidth: .infinity)
-                                    .background(.white)
-                                    .cornerRadius(.infinity)
-                            }
+                        Button { webView?.goBack() }
+                        label: { controlIcon("chevron.backward") }
                             .disabled(!(webView?.canGoBack ?? false))
                             .opacity((webView?.canGoBack ?? false) ? 1 : 0.5)
-                            
-                            Button {
-                                webView?.goForward()
-                            } label: {
-                                Image(systemName: "chevron.forward")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 16, height: 16)
-                                    .foregroundColor(.black)
-                                    .padding(12)
-                                    .frame(maxWidth: .infinity)
-                                    .background(.white)
-                                    .cornerRadius(.infinity)
-                            }
+                        
+                        Button { webView?.goForward() }
+                        label: { controlIcon("chevron.forward") }
                             .disabled(!(webView?.canGoForward ?? false))
                             .opacity((webView?.canGoForward ?? false) ? 1 : 0.5)
-                        }
-                        .frame(maxHeight: .infinity)
                         
-                        Button {
-                            webView?.load(URLRequest(url: homeURL))
-                        } label: {
-                            Image(systemName: "house")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 16, height: 16)
-                                .foregroundColor(.black)
-                                .padding(12)
-                                .background(.white)
-                                .cornerRadius(.infinity)
-                        }
+                        Button { webView?.load(URLRequest(url: homeURL)) }
+                        label: { controlIcon("house") }
                     }
                         .padding(.horizontal, 50)
                         .frame(height: 40),
@@ -122,8 +76,20 @@ struct ContentView: View {
             .ignoresSafeArea()
         }
     }
+    
+    private func controlIcon(_ name: String) -> some View {
+        Image(systemName: name)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 16, height: 16)
+            .foregroundColor(.black)
+            .padding(12)
+            .background(.white)
+            .cornerRadius(.infinity)
+    }
 }
 
 #Preview {
     ContentView()
 }
+
