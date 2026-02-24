@@ -1,39 +1,31 @@
 //
-//  ContentView.swift
+//  SecondView.swift
 //  WebView-SwiftUI
 //
-//  Created by Salah Khaled on 23/02/2026.
+//  Created by Salah Khaled on 24/02/2026.
 //
 
 import SwiftUI
-import WebKit
 
-struct ContentView: View {
+struct SecondView: View {
     
-    @State private var isLoading = false
-    @State private var webView: WKWebView? = nil
-    private let homeURL = URL(string: "https://www.google.com")!
+    @StateObject private var viewModel = WebViewModel()
     
     var body: some View {
         ZStack {
-            // WebView
-            WebView(webView: $webView, url: homeURL)
-                .set(loading: $isLoading)
-                .set(navigationPolicy: { _ in .allow })
-            //                .set(webView: $webView)
+            
+            SecondWebView(viewModel: viewModel)
                 .ignoresSafeArea(edges: [.bottom, .leading, .trailing])
             
-            // Loader
-            if isLoading {
-                Color.black.opacity(0.3)
-                    .ignoresSafeArea()
+            if viewModel.isLoading {
+                Color.black.opacity(0.3).ignoresSafeArea()
                 
                 ProgressView()
                     .padding()
                     .background(.thickMaterial)
                     .cornerRadius(12)
             }
-            // Controls
+            
             VStack {
                 Spacer()
                 LinearGradient(
@@ -52,20 +44,20 @@ struct ContentView: View {
                     // Controls
                     HStack(spacing: 12) {
                         
-                        Button { webView?.reload() }
+                        Button { viewModel.reload() }
                         label: { controlIcon("arrow.clockwise") }
                         
-                        Button { webView?.goBack() }
+                        Button { viewModel.back() }
                         label: { controlIcon("chevron.backward") }
-                            .disabled(!(webView?.canGoBack ?? false))
-                            .opacity((webView?.canGoBack ?? false) ? 1 : 0.5)
+                            .disabled(!viewModel.canGoBack)
+                            .opacity(viewModel.canGoBack ? 1 : 0.5)
                         
-                        Button { webView?.goForward() }
+                        Button { viewModel.forward() }
                         label: { controlIcon("chevron.forward") }
-                            .disabled(!(webView?.canGoForward ?? false))
-                            .opacity((webView?.canGoForward ?? false) ? 1 : 0.5)
+                            .disabled(!viewModel.canGoForward)
+                            .opacity(viewModel.canGoForward ? 1 : 0.5)
                         
-                        Button { webView?.load(URLRequest(url: homeURL)) }
+                        Button { viewModel.home() }
                         label: { controlIcon("house") }
                     }
                         .padding(.horizontal, 50)
@@ -75,21 +67,23 @@ struct ContentView: View {
             }
             .ignoresSafeArea()
         }
+        .onAppear {
+            viewModel.home()
+        }
     }
     
-    private func controlIcon(_ name: String) -> some View {
-        Image(systemName: name)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 16, height: 16)
-            .foregroundColor(.black)
-            .padding(12)
-            .background(.white)
-            .cornerRadius(.infinity)
-    }
+        private func controlIcon(_ name: String) -> some View {
+            Image(systemName: name)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 16, height: 16)
+                .foregroundColor(.black)
+                .padding(12)
+                .background(.white)
+                .cornerRadius(.infinity)
+        }
 }
 
 #Preview {
-    ContentView()
+    SecondView()
 }
-

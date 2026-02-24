@@ -8,7 +8,7 @@
 import SwiftUI
 import WebKit
 
-struct WebView: UIViewRepresentable {
+struct FirstWebView: UIViewRepresentable {
     
     // MARK: - Properties
     @Binding var webView: WKWebView?
@@ -38,10 +38,10 @@ struct WebView: UIViewRepresentable {
     
     class Coordinator: NSObject, WKNavigationDelegate {
         
-        var parent: WebView
+        var parent: FirstWebView
 
         
-        init(parent: WebView) {
+        init(parent: FirstWebView) {
             self.parent = parent
         }
         
@@ -65,27 +65,21 @@ struct WebView: UIViewRepresentable {
 }
 
 // MARK: - Extension
-extension WebView {
+extension FirstWebView {
     
-    func set(navigationPolicy: @escaping (WKNavigationAction) -> WKNavigationActionPolicy) -> WebView {
+    func set(navigationPolicy: @escaping (WKNavigationAction) -> WKNavigationActionPolicy) -> FirstWebView {
         var view = self
         view.navigationPolicy = navigationPolicy
         return view
     }
     
-    func set(loading: Binding<Bool>) -> WebView {
+    func set(loading: Binding<Bool>) -> FirstWebView {
         var view = self
         view.loadingBinding = loading
         return view
     }
     
-    func set(webView: Binding<WKWebView?>) -> WebView {
-        var view = self
-        view._webView = webView
-        return view
-    }
-    
-    func home(webView: Binding<WKWebView?>) -> WebView {
+    func home(webView: Binding<WKWebView?>) -> FirstWebView {
         var view = self
         view._webView = webView
         return view
